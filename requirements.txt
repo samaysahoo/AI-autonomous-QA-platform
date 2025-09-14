@@ -38,7 +38,7 @@ pytesseract==0.3.10
 # Web Framework & API
 fastapi==0.104.1
 uvicorn==0.24.0
-pydantic==2.5.0
+pydantic==2.11.9
 sqlalchemy==2.0.23
 
 # Monitoring & Logging
