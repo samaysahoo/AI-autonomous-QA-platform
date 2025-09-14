@@ -1,0 +1,136 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-test-platform
+  namespace: ai-test-automation
+  labels:
+    app: ai-test-platform
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ai-test-platform
+  template:
+    metadata:
+      labels:
+        app: ai-test-platform
+    spec:
+      containers:
+      - name: ai-test-platform
+        image: ai-test-platform:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://user:password@postgresql:5432/test_automation"
+        - name: REDIS_URL
+          value: "redis://redis:6379/0"
+        - name: TEMPORAL_HOST
+          value: "temporal:7233"
+        - name: CHROMA_PERSIST_DIRECTORY
+          value: "/app/data/chroma_db"
+        - name: FAISS_INDEX_PATH
+          value: "/app/data/faiss_index"
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ai-test-secrets
+              key: openai-api-key
+        - name: JIRA_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: ai-test-secrets
+              key: jira-api-token
+        - name: DATADOG_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ai-test-secrets
+              key: datadog-api-key
+        volumeMounts:
+        - name: data-volume
+          mountPath: /app/data
+        - name: logs-volume
+          mountPath: /app/logs
+        - name: screenshots-volume
+          mountPath: /app/screenshots
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: ai-test-data-pvc
+      - name: logs-volume
+        persistentVolumeClaim:
+          claimName: ai-test-logs-pvc
+      - name: screenshots-volume
+        persistentVolumeClaim:
+          claimName: ai-test-screenshots-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-test-platform-service
+  namespace: ai-test-automation
+  labels:
+    app: ai-test-platform
+spec:
+  selector:
+    app: ai-test-platform
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ai-test-data-pvc
+  namespace: ai-test-automation
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ai-test-logs-pvc
+  namespace: ai-test-automation
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ai-test-screenshots-pvc
+  namespace: ai-test-automation
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
