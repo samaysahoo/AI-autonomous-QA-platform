@@ -1,7 +1,9 @@
 # Core AI/ML dependencies
 openai==1.3.0
-langchain==0.0.350
-langchain-openai==0.0.2
+langchain==0.1.0
+langchain-openai==0.0.5
+langgraph==0.0.20
+langgraph-checkpoint==0.0.3
 chromadb==0.4.18
 faiss-cpu==1.7.4
 transformers==4.35.0

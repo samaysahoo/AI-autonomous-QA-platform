@@ -18,6 +18,14 @@ A comprehensive testing automation system that leverages AI, ML, and observabili
 
 ## 🏗️ Architecture
 
+### 🤖 LangGraph Multi-Agent System
+- **Industry-standard LangGraph framework** for robust multi-agent coordination
+- **Test Planner Agent**: Interprets product changes and tickets → test scenarios
+- **Execution Agent**: Chooses platform/device + executes tests adaptively  
+- **Diagnosis Agent**: Clusters results, triages bugs, suggests fix paths
+- **Learning Agent**: Consumes logs, feedback, and PRs to update models
+- **Autonomous coordination** with human escalation only when needed
+
 ### 1. Data Ingestion Pipeline
 - Pulls specifications, user stories, and bug tickets from Jira API
 - Ingests analytics events and crash logs from Datadog/Sentry

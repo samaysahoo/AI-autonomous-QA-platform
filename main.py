@@ -8,6 +8,7 @@ import uvicorn
 from config.settings import get_settings
 from src.data_ingestion import JiraIngestor, AnalyticsIngestor, VectorStoreManager
 from src.dashboard.dashboard_api import app
+from src.langgraph_agents.api import app as langgraph_app
 
 # Configure logging
 logging.basicConfig(
@@ -61,6 +62,20 @@ def run_dashboard(host: str = "0.0.0.0", port: int = 8000):
     
     uvicorn.run(
         app,
+        host=host,
+        port=port,
+        reload=False,
+        log_level="info"
+    )
+
+
+def run_langgraph_api(host: str = "0.0.0.0", port: int = 8001):
+    """Run the LangGraph multi-agent API server."""
+    
+    logger.info(f"Starting LangGraph multi-agent server on {host}:{port}")
+    
+    uvicorn.run(
+        langgraph_app,
         host=host,
         port=port,
         reload=False,
@@ -220,9 +235,11 @@ def main():
         print("Usage: python main.py [command]")
         print("Commands:")
         print("  dashboard    - Run the dashboard API server")
+        print("  langgraph    - Run the LangGraph multi-agent API server")
         print("  ingest       - Run data ingestion pipeline")
         print("  generate     - Run test generation example")
         print("  risk         - Run risk analysis example")
+        print("  demo         - Run LangGraph multi-agent demo")
         print("  init         - Initialize system")
         return
     
@@ -245,6 +262,20 @@ def main():
     
     elif command == "risk":
         asyncio.run(run_risk_analysis_example())
+    
+    elif command == "langgraph":
+        # Initialize system first
+        if not asyncio.run(initialize_system()):
+            logger.error("Failed to initialize system")
+            return
+        
+        # Run LangGraph API
+        run_langgraph_api()
+    
+    elif command == "demo":
+        # Run LangGraph demo
+        from scripts.demo_langgraph_system import main as demo_main
+        asyncio.run(demo_main())
     
     elif command == "init":
         success = asyncio.run(initialize_system())
