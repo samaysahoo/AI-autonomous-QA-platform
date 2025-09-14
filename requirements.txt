@@ -46,7 +46,7 @@ structlog==23.2.0
 # Development
 pytest-cov==4.1.0
 black==23.11.0
-flake8==6.1.0
+flake8==7.3.0
 mypy==1.7.1
 
 # Multi-Agent System
