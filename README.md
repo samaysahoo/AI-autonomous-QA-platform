@@ -1,6 +1,6 @@
 # 🤖 AI-Powered Test Automation Platform
 
-[![CI/CD](https://github.com/your-username/ai-test-automation-platform/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/your-username/ai-test-automation-platform/actions)
+[![CI/CD](https://github.com/samaysahoo/ai-test-automation-platform/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/samaysahoo/ai-test-automation-platform/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -57,6 +57,18 @@ A comprehensive testing automation system that leverages AI, ML, and observabili
 - Python 3.8 or higher
 - Docker (optional)
 - API keys for OpenAI, Jira, Datadog, Sentry
+
+### 🎯 Demo Mode (Recommended for Testing)
+The platform includes a comprehensive demo mode with synthetic data from Jira, Datadog, Sentry, GitHub, and other sources. This allows you to test the entire system without external API dependencies.
+
+**Quick Demo Start:**
+```bash
+# Run complete system demo with synthetic data
+python main.py demo-full
+
+# Run LangGraph multi-agent demo
+python main.py demo
+```
 
 ### Installation
 

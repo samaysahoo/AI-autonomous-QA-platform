@@ -240,6 +240,7 @@ def main():
         print("  generate     - Run test generation example")
         print("  risk         - Run risk analysis example")
         print("  demo         - Run LangGraph multi-agent demo")
+        print("  demo-full    - Run complete system demo with synthetic data")
         print("  init         - Initialize system")
         return
     
@@ -276,6 +277,11 @@ def main():
         # Run LangGraph demo
         from scripts.demo_langgraph_system import main as demo_main
         asyncio.run(demo_main())
+    
+    elif command == "demo-full":
+        # Run complete system demo with synthetic data
+        from scripts.demo_full_system import main as demo_full_main
+        asyncio.run(demo_full_main())
     
     elif command == "init":
         success = asyncio.run(initialize_system())
